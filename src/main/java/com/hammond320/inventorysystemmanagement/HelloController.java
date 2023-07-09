@@ -61,6 +61,8 @@ public class HelloController {
                     alert.setContentText("Successfully Login!");
                     alert.showAndWait();
 
+                    loginBtn.getScene().getWindow().hide();
+
                     Parent root = FXMLLoader.load(getClass().getResource("dashboard.fxml"));
                     Stage stage = new Stage();
                     Scene scene = new Scene(root);
