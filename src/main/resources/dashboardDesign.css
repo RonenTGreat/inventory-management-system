@@ -1,0 +1,48 @@
+.top-form{
+    -fx-background-color: #fff;
+    -fx-border-color: #000;
+    -fx-border-width: .4px .4px .2px .4px;
+}
+
+.semi-top-form{
+    -fx-background-color: #efefef;
+    -fx-border-color: #000;
+    -fx-border-radius: .2px .4px .4px .4px;
+}
+
+.nav-form{
+    -fx-background-color: linear-gradient(to bottom right, #d75d25, #e1d311);
+}
+
+.nav-btn{
+    -fx-background-color: transparent;
+    -fx-cursor: hand;
+    -fx-font-family: "Arial";
+    -fx-font-size: 15px;
+    -fx-text-fill: #fff;
+    -fx-alignment: CENTER-LEFT;
+}
+
+.logout{
+    -fx-background-color: #d75d25;
+    -fx-background-radius: 10px;
+    -fx-cursor: hand;
+}
+
+.logout:hover{
+    -fx-background-color: #fc8d5d;
+}
+
+.shadow{
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.4), 5, 0, 0, 0);
+}
+
+.white-bg{
+    -fx-background-color: #fff;
+    -fx-background-radius: 8px;
+}
+
+.card{
+    -fx-background-color: linear-gradient(to right, #fa793c, #cc4c0c);
+    -fx-background-radius: 5px;
+}
