@@ -58,17 +58,17 @@
                                  </font>
                               </Label>
                               <Line endX="65.0" layoutX="117.0" layoutY="205.0" startX="-100.0" stroke="WHITE" />
-                              <Button fx:id="home_btn" layoutX="10.0" layoutY="232.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="180.0" styleClass="nav-btn" stylesheets="@../../../dashboardDesign.css" text="Home">
+                              <Button fx:id="home_btn" layoutX="10.0" layoutY="232.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="35.0" prefWidth="180.0" styleClass="nav-btn" stylesheets="@../../../dashboardDesign.css" text="Home">
                                  <graphic>
                                     <FontAwesomeIcon fill="WHITE" glyphName="HOME" size="1.5em" text="" />
                                  </graphic>
                               </Button>
-                              <Button fx:id="addProduct_btn" layoutX="10.0" layoutY="267.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="180.0" styleClass="nav-btn" stylesheets="@../../../dashboardDesign.css" text="Add Products">
+                              <Button fx:id="addProduct_btn" layoutX="10.0" layoutY="267.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="35.0" prefWidth="180.0" styleClass="nav-btn" stylesheets="@../../../dashboardDesign.css" text="Add Products">
                                  <graphic>
                                     <FontAwesomeIcon fill="WHITE" glyphName="PLUS" size="1.5em" />
                                  </graphic>
                               </Button>
-                              <Button fx:id="orders_btn" layoutX="10.0" layoutY="302.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="180.0" styleClass="nav-btn" stylesheets="@../../../dashboardDesign.css" text="Orders">
+                              <Button fx:id="orders_btn" layoutX="10.0" layoutY="302.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="35.0" prefWidth="180.0" styleClass="nav-btn" stylesheets="@../../../dashboardDesign.css" text="Orders">
                                  <graphic>
                                     <FontAwesomeIcon fill="WHITE" glyphName="CUBE" size="1.5em" />
                                  </graphic>
@@ -95,7 +95,7 @@
                <center>
                   <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                      <children>
-                        <AnchorPane fx:id="home_form" layoutX="239.0" layoutY="167.0" prefHeight="555.0" prefWidth="900.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <AnchorPane fx:id="home_form" layoutX="239.0" layoutY="167.0" prefHeight="555.0" prefWidth="900.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
                               <AnchorPane layoutX="13.0" layoutY="14.0" prefHeight="164.0" prefWidth="875.0" stylesheets="@../../../dashboardDesign.css">
                                  <styleClass>
@@ -220,7 +220,10 @@
                                        </styleClass>
                                        <children>
                                           <ImageView fx:id="addProducts_imageView" fitHeight="173.0" fitWidth="155.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true" />
-                                          <Button fx:id="addProducts_importBtn" layoutY="151.0" mnemonicParsing="false" prefHeight="33.0" prefWidth="156.0" text="Import" />
+                                          <Button fx:id="addProducts_importBtn" layoutY="151.0" mnemonicParsing="false" prefHeight="33.0" prefWidth="156.0" styleClass="import-btn" stylesheets="@../../../dashboardDesign.css" text="Import">
+                                             <font>
+                                                <Font name="System Bold" size="15.0" />
+                                             </font></Button>
                                        </children>
                                     </AnchorPane>
                                     <Label layoutX="44.0" layoutY="232.0" text="Product ID:">
@@ -228,41 +231,41 @@
                                           <Font size="15.0" />
                                        </font>
                                     </Label>
-                                    <TextField fx:id="addProducts_productid" layoutX="133.0" layoutY="230.0" prefHeight="25.0" prefWidth="171.0" />
+                                    <TextField fx:id="addProducts_productid" layoutX="134.0" layoutY="230.0" prefHeight="25.0" prefWidth="171.0" styleClass="textfield" stylesheets="@../../../dashboardDesign.css" />
                                     <Label layoutX="44.0" layoutY="266.0" text="Product ID:">
                                        <font>
                                           <Font size="15.0" />
                                        </font>
                                     </Label>
-                                    <ComboBox fx:id="addProducts_productType" layoutX="133.0" layoutY="264.0" prefHeight="25.0" prefWidth="172.0" promptText="Choose" />
+                                    <ComboBox fx:id="addProducts_productType" layoutX="134.0" layoutY="264.0" prefHeight="25.0" prefWidth="172.0" promptText="Choose" styleClass="textfield" stylesheets="@../../../dashboardDesign.css" />
                                     <Label layoutX="73.0" layoutY="299.0" text="Brand:">
                                        <font>
                                           <Font size="15.0" />
                                        </font>
                                     </Label>
-                                    <TextField fx:id="addProducts_brand" layoutX="133.0" layoutY="297.0" prefHeight="25.0" prefWidth="171.0" />
+                                    <TextField fx:id="addProducts_brand" layoutX="134.0" layoutY="296.0" prefHeight="25.0" prefWidth="171.0" styleClass="textfield" stylesheets="@../../../dashboardDesign.css" />
                                     <Label layoutX="77.0" layoutY="400.0" text="Price:">
                                        <font>
                                           <Font size="15.0" />
                                        </font>
                                     </Label>
-                                    <TextField fx:id="addProducts_price" layoutX="134.0" layoutY="398.0" prefHeight="25.0" prefWidth="171.0" />
+                                    <TextField fx:id="addProducts_price" layoutX="134.0" layoutY="398.0" prefHeight="25.0" prefWidth="171.0" styleClass="textfield" stylesheets="@../../../dashboardDesign.css" />
                                     <Label layoutX="76.0" layoutY="368.0" text="State:">
                                        <font>
                                           <Font size="15.0" />
                                        </font>
                                     </Label>
-                                    <ComboBox fx:id="addProducts_status" layoutX="133.0" layoutY="366.0" prefHeight="25.0" prefWidth="172.0" promptText="Choose" />
-                                    <Button fx:id="addProducts_addBtn" layoutX="31.0" layoutY="431.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="70.0" text="Add" />
-                                    <Button fx:id="addProducts_updateBtn" layoutX="180.0" layoutY="431.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="70.0" text="Update" />
-                                    <Button fx:id="addProducts_deleteBtn" layoutX="180.0" layoutY="482.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="70.0" text="Delete" />
-                                    <Button fx:id="addProducts_resetBtn" layoutX="31.0" layoutY="482.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="70.0" text="Reset" />
+                                    <ComboBox fx:id="addProducts_status" layoutX="134.0" layoutY="365.0" prefHeight="25.0" prefWidth="172.0" promptText="Choose" styleClass="textfield" stylesheets="@../../../dashboardDesign.css" />
+                                    <Button fx:id="addProducts_addBtn" layoutX="31.0" layoutY="431.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="70.0" styleClass="add-btn" stylesheets="@../../../dashboardDesign.css" text="Add" />
+                                    <Button fx:id="addProducts_updateBtn" layoutX="180.0" layoutY="431.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="70.0" styleClass="update-btn" stylesheets="@../../../dashboardDesign.css" text="Update" />
+                                    <Button fx:id="addProducts_deleteBtn" layoutX="180.0" layoutY="482.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="70.0" styleClass="delete-btn" stylesheets="@../../../dashboardDesign.css" text="Delete" />
+                                    <Button fx:id="addProducts_resetBtn" layoutX="31.0" layoutY="482.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="70.0" styleClass="reset-btn" stylesheets="@../../../dashboardDesign.css" text="Reset" />
                                     <Label layoutX="24.0" layoutY="336.0" text="Product Name:">
                                        <font>
                                           <Font size="15.0" />
                                        </font>
                                     </Label>
-                                    <TextField fx:id="addProducts_productName" layoutX="134.0" layoutY="334.0" prefHeight="25.0" prefWidth="171.0" />
+                                    <TextField fx:id="addProducts_productName" layoutX="134.0" layoutY="334.0" prefHeight="25.0" prefWidth="171.0" styleClass="textfield" stylesheets="@../../../dashboardDesign.css" />
                                  </children>
                               </AnchorPane>
                               <AnchorPane layoutX="346.0" layoutY="14.0" prefHeight="528.0" prefWidth="545.0" stylesheets="@../../../dashboardDesign.css">
@@ -281,13 +284,13 @@
                                           <TableColumn fx:id="addProducts_col_status" prefWidth="62.0" text="Status" />
                                       </columns>
                                     </TableView>
-                                    <TextField fx:id="addProducts_search" layoutX="4.0" layoutY="14.0" prefHeight="25.0" prefWidth="217.0" text="Search" />
+                                    <TextField fx:id="addProducts_search" layoutX="4.0" layoutY="14.0" prefHeight="25.0" prefWidth="217.0" promptText="Search" styleClass="search" stylesheets="@../../../dashboardDesign.css" />
                                     <FontAwesomeIcon fill="#fc8d42" glyphName="SEARCH" layoutX="14.0" layoutY="31.0" size="1.2em" />
                                  </children>
                               </AnchorPane>
                            </children>
                         </AnchorPane>
-                        <AnchorPane fx:id="orders_form" prefHeight="540.0" prefWidth="891.0" visible="false">
+                        <AnchorPane fx:id="orders_form" prefHeight="540.0" prefWidth="891.0">
                            <children>
                               <AnchorPane layoutX="7.0" layoutY="14.0" prefHeight="526.0" prefWidth="468.0" stylesheets="@../../../dashboardDesign.css">
                                  <styleClass>
@@ -317,20 +320,20 @@
                                           <Font size="15.0" />
                                        </font>
                                     </Label>
-                                    <ComboBox fx:id="orders_productType" layoutX="151.0" layoutY="41.0" prefHeight="25.0" prefWidth="176.0" promptText="Choose" />
+                                    <ComboBox fx:id="orders_productType" layoutX="151.0" layoutY="41.0" prefHeight="25.0" prefWidth="176.0" promptText="Choose" styleClass="textfield" stylesheets="@../../../dashboardDesign.css" />
                                     <Label layoutX="34.0" layoutY="81.0" text="Product Type:">
                                        <font>
                                           <Font size="15.0" />
                                        </font>
                                     </Label>
-                                    <ComboBox fx:id="orders_brand" layoutX="151.0" layoutY="79.0" prefHeight="25.0" prefWidth="176.0" promptText="Choose" />
+                                    <ComboBox fx:id="orders_brand" layoutX="151.0" layoutY="79.0" prefHeight="25.0" prefWidth="176.0" promptText="Choose" styleClass="textfield" stylesheets="@../../../dashboardDesign.css" />
                                     <Label layoutX="26.0" layoutY="123.0" text="Product Name:">
                                        <font>
                                           <Font size="15.0" />
                                        </font>
                                     </Label>
-                                    <ComboBox fx:id="orders_productName" layoutX="151.0" layoutY="121.0" prefHeight="25.0" prefWidth="176.0" promptText="Choose" />
-                                    <Spinner fx:id="orders_quantity" layoutX="151.0" layoutY="167.0" />
+                                    <ComboBox fx:id="orders_productName" layoutX="151.0" layoutY="121.0" prefHeight="25.0" prefWidth="176.0" promptText="Choose" styleClass="textfield" stylesheets="@../../../dashboardDesign.css" />
+                                    <Spinner fx:id="orders_quantity" layoutX="151.0" layoutY="167.0" styleClass="textfield" stylesheets="@../../../dashboardDesign.css" />
                                     <Label layoutX="64.0" layoutY="169.0" text="Quantity:">
                                        <font>
                                           <Font size="15.0" />
@@ -351,7 +354,7 @@
                                           <Font size="15.0" />
                                        </font>
                                     </Label>
-                                    <TextField fx:id="orders_amount" layoutX="151.0" layoutY="293.0" />
+                                    <TextField fx:id="orders_amount" layoutX="151.0" layoutY="293.0" styleClass="textfield" stylesheets="@../../../dashboardDesign.css" />
                                     <Label layoutX="68.0" layoutY="329.0" text="Balance:">
                                        <font>
                                           <Font size="15.0" />
@@ -362,9 +365,10 @@
                                           <Font size="15.0" />
                                        </font>
                                     </Label>
-                                    <Button fx:id="orders_payBtn" layoutX="228.0" layoutY="383.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="91.0" text="Pay" />
-                                    <Button fx:id="orders_receiptBtn" layoutX="64.0" layoutY="383.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="91.0" text="Receipt" />
-                                    <Button fx:id="orders_resetBtn" layoutX="64.0" layoutY="462.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="91.0" text="Reset" />
+                                    <Button fx:id="orders_payBtn" layoutX="228.0" layoutY="383.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="91.0" styleClass="pay-btn" stylesheets="@../../../dashboardDesign.css" text="Pay" />
+                                    <Button fx:id="orders_receiptBtn" layoutX="64.0" layoutY="383.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="91.0" styleClass="receipt-btn" stylesheets="@../../../dashboardDesign.css" text="Receipt" />
+                                    <Button fx:id="orders_resetBtn" layoutX="64.0" layoutY="462.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="91.0" styleClass="reset-btn" stylesheets="@../../../dashboardDesign.css" text="Reset" />
+                                    <Button fx:id="orders_addBtn" layoutX="211.0" layoutY="206.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="91.0" styleClass="update-btn" stylesheets="@../../../dashboardDesign.css" text="Add" />
                                  </children>
                               </AnchorPane>
                            </children>
