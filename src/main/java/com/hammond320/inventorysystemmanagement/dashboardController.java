@@ -1,5 +1,6 @@
 package com.hammond320.inventorysystemmanagement;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 
@@ -170,8 +171,39 @@ public class dashboardController implements Initializable {
     @FXML
     private Label username;
 
-    public void switchForm(){
-        
+    @FXML
+    private Button orders_addBtn;
+
+    public void switchForm(ActionEvent event){
+        if(event.getSource() == home_btn){
+            home_form.setVisible(true);
+            addProducts_form.setVisible(false);
+            orders_form.setVisible(false);
+
+            home_btn.setStyle("-fx-background-color: linear-gradient(to right, #fa793c, #cc4c0c);");
+            addProduct_btn.setStyle("-fx-background-color: transparent");
+            orders_btn.setStyle("-fx-background-color: transparent");
+        } else if (event.getSource() == addProduct_btn) {
+            home_form.setVisible(false);
+            addProducts_form.setVisible(true);
+            orders_form.setVisible(false);
+
+            home_btn.setStyle("-fx-background-color: transparent");
+            addProduct_btn.setStyle("-fx-background-color: linear-gradient(to right, #fa793c, #cc4c0c);");
+            orders_btn.setStyle("-fx-background-color: transparent");
+
+        }else if (event.getSource() == orders_btn) {
+            home_form.setVisible(false);
+            addProducts_form.setVisible(false);
+            orders_form.setVisible(true);
+
+            home_btn.setStyle("-fx-background-color: transparent");
+            addProduct_btn.setStyle("-fx-background-color: transparent");
+            orders_btn.setStyle("-fx-background-color: linear-gradient(to right, #fa793c, #cc4c0c);");
+
+        }
+
+
     }
     
     private  double x = 0;
