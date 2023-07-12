@@ -1,10 +1,16 @@
 package com.hammond320.inventorysystemmanagement;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
@@ -173,6 +179,29 @@ public class dashboardController implements Initializable {
 
     @FXML
     private Button orders_addBtn;
+
+    private Connection connect;
+    private PreparedStatement prepare;
+    private Statement statement;
+    private ResultSet result;
+
+
+    public ObservableList<productData> addProductsListData(){
+        ObservableList<productData> productList = FXCollections.observableArrayList();
+        String sql = "SELECT * FROM product";
+        connect = database.connectionDb();
+        try{
+            prepare = connect.prepareStatement(sql);
+            result = prepare.executeQuery();
+            productData prodD;
+
+            while (result.next()){
+                prodD = new productData(result.getInt("product_id"));
+                // Continue HERE!!!!
+            }
+
+        }catch (Exception e){e.printStackTrace();}
+    }
 
     public void switchForm(ActionEvent event){
         if(event.getSource() == home_btn){
