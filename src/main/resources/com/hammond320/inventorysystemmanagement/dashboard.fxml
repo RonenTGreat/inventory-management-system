@@ -20,7 +20,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.hammond320.inventorysystemmanagement.dashboardController">
    <children>
       <AnchorPane fx:id="main_form" prefHeight="200.0" prefWidth="200.0">
          <children>
@@ -73,7 +73,7 @@
                                     <FontAwesomeIcon fill="WHITE" glyphName="CUBE" size="1.5em" />
                                  </graphic>
                               </Button>
-                              <Button layoutX="14.0" layoutY="516.0" mnemonicParsing="false" stylesheets="@../../../dashboardDesign.css">
+                              <Button layoutX="14.0" layoutY="516.0" mnemonicParsing="false" onAction="#logoout" stylesheets="@../../../dashboardDesign.css">
                                  <graphic>
                                     <FontAwesomeIcon fx:id="logout" fill="WHITE" glyphName="SIGN_OUT" size="2em" styleClass="logout" />
                                  </graphic>
