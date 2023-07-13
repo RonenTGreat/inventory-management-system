@@ -6,6 +6,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 
+import java.io.File;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -19,10 +20,13 @@ import javafx.scene.Scene;
 import javafx.scene.chart.AreaChart;
 import javafx.scene.chart.BarChart;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -37,22 +41,22 @@ public class dashboardController implements Initializable {
     private TextField addProducts_brand;
 
     @FXML
-    private TableColumn<?, ?> addProducts_col_brand;
+    private TableColumn<productData, String> addProducts_col_brand;
 
     @FXML
-    private TableColumn<?, ?> addProducts_col_price;
+    private TableColumn<productData, String> addProducts_col_price;
 
     @FXML
-    private TableColumn<?, ?> addProducts_col_productName;
+    private TableColumn<productData, String> addProducts_col_productName;
 
     @FXML
-    private TableColumn<?, ?> addProducts_col_productid;
+    private TableColumn<productData, String> addProducts_col_productid;
 
     @FXML
-    private TableColumn<?, ?> addProducts_col_status;
+    private TableColumn<productData, String> addProducts_col_status;
 
     @FXML
-    private TableColumn<?, ?> addProducts_col_type;
+    private TableColumn<productData, String> addProducts_col_type;
 
     @FXML
     private Button addProducts_deleteBtn;
@@ -88,7 +92,7 @@ public class dashboardController implements Initializable {
     private ComboBox<?> addProducts_status;
 
     @FXML
-    private TableView<?> addProducts_tableView;
+    private TableView<productData> addProducts_tableView;
 
     @FXML
     private Button addProducts_updateBtn;
@@ -133,7 +137,7 @@ public class dashboardController implements Initializable {
     private Button orders_btn;
 
     @FXML
-    private TableColumn<?, ?> orders_col_brand;
+    private TableColumn<productData, String> orders_col_brand;
 
     @FXML
     private TableColumn<?, ?> orders_col_brandName;
@@ -184,6 +188,26 @@ public class dashboardController implements Initializable {
     private PreparedStatement prepare;
     private Statement statement;
     private ResultSet result;
+    private Image image;
+
+    public void addProductsAdd(){
+        String sql = "INSERT INTO product (product_id,type,brand,productName,price,status,image,date) ";
+    }
+
+    public void addProductsImportImage(){
+        FileChooser open = new FileChooser();
+        open.setTitle("Open Image File");
+        open.getExtensionFilters().add(new FileChooser.ExtensionFilter("Image File", "*jpg", "*png"));
+
+        File file = open.showOpenDialog(main_form.getScene().getWindow());
+
+        if(file != null){
+            getData.path = file.getAbsolutePath();
+
+            image = new Image(file.toURI().toString(),155, 173, false,true);
+            addProducts_imageView.setImage(image);
+        }
+    }
 
 
     public ObservableList<productData> addProductsListData(){
@@ -196,11 +220,34 @@ public class dashboardController implements Initializable {
             productData prodD;
 
             while (result.next()){
-                prodD = new productData(result.getInt("product_id"));
-                // Continue HERE!!!!
+                prodD = new productData(result.getInt("product_id"),
+                        result.getString("type"),
+                        result.getString("brand"),
+                        result.getString("productName"),
+                        result.getDouble("price"),
+                        result.getString("status"),
+                        result.getString("image"),
+                        result.getDate("date"));
+                productList.add(prodD);
             }
 
         }catch (Exception e){e.printStackTrace();}
+        return productList;
+    }
+
+    private ObservableList<productData> addProductsList;
+
+    public  void addProductsShowListData(){
+        addProductsList = addProductsListData();
+        addProducts_col_productid.setCellValueFactory(new PropertyValueFactory<>("productId"));
+        addProducts_col_type.setCellValueFactory(new PropertyValueFactory<>("type"));
+        addProducts_col_brand.setCellValueFactory(new PropertyValueFactory<>("brand"));
+        addProducts_col_productName.setCellValueFactory(new PropertyValueFactory<>("productName"));
+        addProducts_col_status.setCellValueFactory(new PropertyValueFactory<>("status"));
+        addProducts_tableView.setItems(addProductsList);
+
+
+
     }
 
     public void switchForm(ActionEvent event){
@@ -220,6 +267,8 @@ public class dashboardController implements Initializable {
             home_btn.setStyle("-fx-background-color: transparent");
             addProduct_btn.setStyle("-fx-background-color: linear-gradient(to right, #fa793c, #cc4c0c);");
             orders_btn.setStyle("-fx-background-color: transparent");
+
+            addProductsShowListData();
 
         }else if (event.getSource() == orders_btn) {
             home_form.setVisible(false);
@@ -282,6 +331,7 @@ public class dashboardController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources){
 
+        addProductsShowListData();
 
     }
 }
