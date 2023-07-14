@@ -12,8 +12,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.util.Optional;
-import java.util.ResourceBundle;
+import java.util.*;
+
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -191,7 +191,69 @@ public class dashboardController implements Initializable {
     private Image image;
 
     public void addProductsAdd(){
-        String sql = "INSERT INTO product (product_id,type,brand,productName,price,status,image,date) ";
+        String sql = "INSERT INTO product (product_id,type,brand,productName,price,status,image,date) " +
+                "VALUES(?,?,?,?,?,?,?,?)";
+
+        connect =  database.connectionDb();
+
+        try{
+            Alert alert;
+
+            if(addProducts_productid.getText().isEmpty()
+                    || addProducts_productType.getSelectionModel().getSelectedItem() == null
+                    || addProducts_brand.getText().isEmpty()
+                    || addProducts_productName.getText().isEmpty()
+                    || addProducts_price.getText().isEmpty()
+                    || addProducts_status.getSelectionModel().getSelectedItem() == null
+                    || getData.path == ""
+            ){
+                alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error Message");
+                alert.setHeaderText(null);
+                alert.setContentText("Please fill all blank fields");
+                alert.showAndWait();
+
+            }else {
+
+                prepare = connect.prepareStatement(sql);
+                prepare.setString(1, addProducts_productid.getText());
+                prepare.setString(2, (String)addProducts_productType.getSelectionModel().getSelectedItem());
+                prepare.setString(3, addProducts_brand.getText());
+                prepare.setString(4, addProducts_productName.getText());
+                prepare.setString(5, addProducts_price.getText());
+                prepare.setString(6, (String)addProducts_status.getSelectionModel().getSelectedItem());
+
+                String uri = getData.path;
+                uri = uri.replace("\\", "\\\\");
+                prepare.setString(7, uri);
+
+                Date date = new Date();
+                java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+
+                prepare.setString(8, String.valueOf(sqlDate));
+
+                prepare.executeUpdate();
+
+                addProductsShowListData();
+
+                addProductsReset();
+            }
+
+
+        }catch (Exception e){e.printStackTrace();}
+    }
+
+    public void addProductsReset(){
+        addProducts_productid.setText("");
+        addProducts_productType.getSelectionModel().clearSelection();
+        addProducts_brand.setText("");
+        addProducts_productName.setText("");
+        addProducts_price.setText("");
+        addProducts_status.getSelectionModel().clearSelection();
+        addProducts_imageView.setImage(null);
+
+        getData.path = "";
+
     }
 
     public void addProductsImportImage(){
@@ -208,6 +270,33 @@ public class dashboardController implements Initializable {
             addProducts_imageView.setImage(image);
         }
     }
+
+    private String[] listType = {"Snacks", "Drink", "Dessert", "Gadgets", "Personal Product", "Others"};
+    public void addProductsListType(){
+        List<String> listT = new ArrayList<>();
+
+        for(String data: listType){
+            listT.add(data);
+        }
+
+        ObservableList listData = FXCollections.observableArrayList(listT);
+        addProducts_productType.setItems(listData);
+
+    }
+
+    private String[] listStatus = {"Available", "Not Available"};
+    public void addProductsListStatus(){
+        List<String> listS = new ArrayList<>();
+
+        for(String data: listStatus){
+            listS.add(data);
+        }
+
+        ObservableList listData = FXCollections.observableArrayList(listS);
+        addProducts_status.setItems(listData);
+    }
+
+
 
 
     public ObservableList<productData> addProductsListData(){
@@ -250,6 +339,22 @@ public class dashboardController implements Initializable {
 
     }
 
+    public void addProductsSelect(){
+        productData prodD = addProducts_tableView.getSelectionModel().getSelectedItem();
+        int num = addProducts_tableView.getSelectionModel().getSelectedIndex();
+
+        if((num - 1) < -1){return;}
+        addProducts_productid.setText(String.valueOf(prodD.getProductId()));
+        addProducts_brand.setText(prodD.getBrand());
+        addProducts_productName.setText(prodD.getProductName());
+        addProducts_price.setText(String.valueOf(prodD.getPrice()));
+
+        String uri = "file:" + prodD.getImage();
+        image = new Image(uri, 155, 173,false, true);
+        addProducts_imageView.setImage(image);
+
+    }
+
     public void switchForm(ActionEvent event){
         if(event.getSource() == home_btn){
             home_form.setVisible(true);
@@ -269,6 +374,8 @@ public class dashboardController implements Initializable {
             orders_btn.setStyle("-fx-background-color: transparent");
 
             addProductsShowListData();
+            addProductsListStatus();
+            addProductsListType();
 
         }else if (event.getSource() == orders_btn) {
             home_form.setVisible(false);
@@ -332,6 +439,8 @@ public class dashboardController implements Initializable {
     public void initialize(URL location, ResourceBundle resources){
 
         addProductsShowListData();
+        addProductsListStatus();
+        addProductsListType();
 
     }
 }
