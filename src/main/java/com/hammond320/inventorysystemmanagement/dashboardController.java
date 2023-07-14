@@ -2,6 +2,8 @@ package com.hammond320.inventorysystemmanagement;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -215,30 +217,157 @@ public class dashboardController implements Initializable {
 
             }else {
 
-                prepare = connect.prepareStatement(sql);
-                prepare.setString(1, addProducts_productid.getText());
-                prepare.setString(2, (String)addProducts_productType.getSelectionModel().getSelectedItem());
-                prepare.setString(3, addProducts_brand.getText());
-                prepare.setString(4, addProducts_productName.getText());
-                prepare.setString(5, addProducts_price.getText());
-                prepare.setString(6, (String)addProducts_status.getSelectionModel().getSelectedItem());
+                String checkData = "SELECT product_id FROM product WHERE product_id = '"
+                        + addProducts_productid.getText() + "'";
 
-                String uri = getData.path;
-                uri = uri.replace("\\", "\\\\");
-                prepare.setString(7, uri);
+                statement = connect.createStatement();
+                result = statement.executeQuery(checkData);
 
-                Date date = new Date();
-                java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+                if (result.next()) {
+                    alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Error Message");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Product ID: " +  addProducts_productid.getText() + "already exist!");
+                    alert.showAndWait();
 
-                prepare.setString(8, String.valueOf(sqlDate));
+                } else {
 
-                prepare.executeUpdate();
+                    prepare = connect.prepareStatement(sql);
+                    prepare.setString(1, addProducts_productid.getText());
+                    prepare.setString(2, (String) addProducts_productType.getSelectionModel().getSelectedItem());
+                    prepare.setString(3, addProducts_brand.getText());
+                    prepare.setString(4, addProducts_productName.getText());
+                    prepare.setString(5, addProducts_price.getText());
+                    prepare.setString(6, (String) addProducts_status.getSelectionModel().getSelectedItem());
 
-                addProductsShowListData();
 
-                addProductsReset();
+                    String uri = getData.path;
+                    uri = uri.replace("\\", "\\\\");
+                    prepare.setString(7, uri);
+
+                    Date date = new Date();
+                    java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+
+                    prepare.setString(8, String.valueOf(sqlDate));
+
+                    prepare.executeUpdate();
+
+                    addProductsShowListData();
+
+                    addProductsReset();
+                }
             }
 
+
+        }catch (Exception e){e.printStackTrace();}
+    }
+
+    public void addProductsUpdate(){
+
+        String uri = getData.path;
+        uri = uri.replace("\\", "\\\\");
+
+        Date date = new Date();
+        java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+
+        String sql = "UPDATE product SET type = '"
+                +addProducts_productType.getSelectionModel().getSelectedItem()
+                +"', brand = '"+addProducts_brand.getText()
+                +"', productName = '"+addProducts_productName.getText()
+                +"', price = '"+addProducts_price.getText()
+                +"', status = '"+addProducts_status.getSelectionModel().getSelectedItem()
+                +"', image = '"+uri+"', date = '"+sqlDate+"' WHERE product_id = '"
+                +addProducts_productid.getText()+"'";
+        connect = database.connectionDb();
+
+
+
+        try {
+            Alert alert;
+
+            if(addProducts_productid.getText().isEmpty()
+                    || addProducts_productType.getSelectionModel().getSelectedItem() == null
+                    || addProducts_brand.getText().isEmpty()
+                    || addProducts_productName.getText().isEmpty()
+                    || addProducts_price.getText().isEmpty()
+                    || addProducts_status.getSelectionModel().getSelectedItem() == null
+                    || getData.path == ""
+            ){
+                alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error Message");
+                alert.setHeaderText(null);
+                alert.setContentText("Please fill all blank fields");
+                alert.showAndWait();
+
+            }else {
+                alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("Confirmation Message");
+                alert.setHeaderText(null);
+                alert.setContentText("Are you sure you want to UPDATE Product ID: " + addProducts_productid.getText() + "?");
+
+                Optional<ButtonType> option = alert.showAndWait();
+
+                if(option.get().equals(ButtonType.OK)){
+                    statement = connect.createStatement();
+                    statement.executeUpdate(sql);
+
+                    alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Information Message");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Successfully Updated");
+                    alert.showAndWait();
+
+                    addProductsShowListData();
+                    addProductsReset();
+                }
+            }
+
+
+        }catch (Exception e){e.printStackTrace();}
+    }
+
+    public void addProductsDelete(){
+        String sql = "DELETE FROM product WHERE product_id = '"+addProducts_productid.getText()+"'";
+
+        connect = database.connectionDb();
+
+        try{
+            Alert alert;
+
+            if(addProducts_productid.getText().isEmpty()
+                    || addProducts_brand.getText().isEmpty()
+                    || addProducts_productName.getText().isEmpty()
+                    || addProducts_price.getText().isEmpty()
+                    || getData.path == ""
+            ){
+                alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error Message");
+                alert.setHeaderText(null);
+                alert.setContentText("Please fill all blank fields");
+                alert.showAndWait();
+
+            }else{
+                alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("Confirmation Message");
+                alert.setHeaderText(null);
+                alert.setContentText("Are you sure you want to DELETE Product ID: " + addProducts_productid.getText() + "?");
+
+                Optional<ButtonType> option = alert.showAndWait();
+
+                if(option.get().equals(ButtonType.OK)){
+                    statement = connect.createStatement();
+                    statement.executeUpdate(sql);
+
+                    alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Information Message");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Successfully Deleted");
+                    alert.showAndWait();
+
+                    addProductsShowListData();
+                    addProductsReset();
+                }
+            }
 
         }catch (Exception e){e.printStackTrace();}
     }
@@ -297,6 +426,39 @@ public class dashboardController implements Initializable {
     }
 
 
+    public void addProductsSearch(){
+        FilteredList<productData> filter = new FilteredList<>(addProductsList, e -> true);
+
+        addProducts_search.textProperty().addListener((Observable, oldValue, newValue) -> {
+            filter.setPredicate(predicateProductData -> {
+
+                if(newValue == null || newValue.isEmpty()){
+                    return true;
+                }
+
+                String searchKey = newValue.toLowerCase();
+
+                if(predicateProductData.getProductId().toString().contains(searchKey)){
+                    return true;
+                }else if(predicateProductData.getType().toLowerCase().contains(searchKey)){
+                    return true;
+                }else if(predicateProductData.getBrand().toLowerCase().contains(searchKey)){
+                    return true;
+                }else if(predicateProductData.getProductName().toLowerCase().contains(searchKey)){
+                    return true;
+                }else if(predicateProductData.getPrice().toString().contains(searchKey)){
+                    return true;
+                }else if(predicateProductData.getStatus().toLowerCase().contains(searchKey)){
+                    return true;
+                } else return false;
+            });
+        });
+
+        SortedList<productData> sortedList = new SortedList<>(filter);
+
+        sortedList.comparatorProperty().bind(addProducts_tableView.comparatorProperty());
+        addProducts_tableView.setItems(sortedList);
+    }
 
 
     public ObservableList<productData> addProductsListData(){
@@ -333,6 +495,7 @@ public class dashboardController implements Initializable {
         addProducts_col_brand.setCellValueFactory(new PropertyValueFactory<>("brand"));
         addProducts_col_productName.setCellValueFactory(new PropertyValueFactory<>("productName"));
         addProducts_col_status.setCellValueFactory(new PropertyValueFactory<>("status"));
+        addProducts_col_price.setCellValueFactory(new PropertyValueFactory<>("price"));
         addProducts_tableView.setItems(addProductsList);
 
 
@@ -352,7 +515,7 @@ public class dashboardController implements Initializable {
         String uri = "file:" + prodD.getImage();
         image = new Image(uri, 155, 173,false, true);
         addProducts_imageView.setImage(image);
-
+        getData.path = prodD.getImage();
     }
 
     public void switchForm(ActionEvent event){
@@ -376,6 +539,7 @@ public class dashboardController implements Initializable {
             addProductsShowListData();
             addProductsListStatus();
             addProductsListType();
+            addProductsSearch();
 
         }else if (event.getSource() == orders_btn) {
             home_form.setVisible(false);

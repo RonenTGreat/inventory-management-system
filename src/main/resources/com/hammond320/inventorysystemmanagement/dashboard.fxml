@@ -237,7 +237,7 @@
                                           <Font size="15.0" />
                                        </font>
                                     </Label>
-                                    <ComboBox fx:id="addProducts_productType" layoutX="134.0" layoutY="264.0" prefHeight="25.0" prefWidth="172.0" promptText="Choose" styleClass="textfield" stylesheets="@../../../dashboardDesign.css" />
+                                    <ComboBox fx:id="addProducts_productType" layoutX="134.0" layoutY="264.0" onAction="#addProductsListType" prefHeight="25.0" prefWidth="172.0" promptText="Choose" styleClass="textfield" stylesheets="@../../../dashboardDesign.css" />
                                     <Label layoutX="73.0" layoutY="299.0" text="Brand:">
                                        <font>
                                           <Font size="15.0" />
@@ -255,11 +255,11 @@
                                           <Font size="15.0" />
                                        </font>
                                     </Label>
-                                    <ComboBox fx:id="addProducts_status" layoutX="134.0" layoutY="365.0" prefHeight="25.0" prefWidth="172.0" promptText="Choose" styleClass="textfield" stylesheets="@../../../dashboardDesign.css" />
+                                    <ComboBox fx:id="addProducts_status" layoutX="134.0" layoutY="365.0" onAction="#addProductsListStatus" prefHeight="25.0" prefWidth="172.0" promptText="Choose" styleClass="textfield" stylesheets="@../../../dashboardDesign.css" />
                                     <Button fx:id="addProducts_addBtn" layoutX="31.0" layoutY="431.0" mnemonicParsing="false" onAction="#addProductsAdd" prefHeight="40.0" prefWidth="70.0" styleClass="add-btn" stylesheets="@../../../dashboardDesign.css" text="Add" />
-                                    <Button fx:id="addProducts_updateBtn" layoutX="180.0" layoutY="431.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="70.0" styleClass="update-btn" stylesheets="@../../../dashboardDesign.css" text="Update" />
-                                    <Button fx:id="addProducts_deleteBtn" layoutX="180.0" layoutY="482.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="70.0" styleClass="delete-btn" stylesheets="@../../../dashboardDesign.css" text="Delete" />
-                                    <Button fx:id="addProducts_resetBtn" layoutX="31.0" layoutY="482.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="70.0" styleClass="reset-btn" stylesheets="@../../../dashboardDesign.css" text="Reset" />
+                                    <Button fx:id="addProducts_updateBtn" layoutX="180.0" layoutY="431.0" mnemonicParsing="false" onAction="#addProductsUpdate" prefHeight="40.0" prefWidth="70.0" styleClass="update-btn" stylesheets="@../../../dashboardDesign.css" text="Update" />
+                                    <Button fx:id="addProducts_deleteBtn" layoutX="180.0" layoutY="482.0" mnemonicParsing="false" onAction="#addProductsDelete" prefHeight="40.0" prefWidth="70.0" styleClass="delete-btn" stylesheets="@../../../dashboardDesign.css" text="Delete" />
+                                    <Button fx:id="addProducts_resetBtn" layoutX="31.0" layoutY="482.0" mnemonicParsing="false" onAction="#addProductsReset" prefHeight="40.0" prefWidth="70.0" styleClass="reset-btn" stylesheets="@../../../dashboardDesign.css" text="Reset" />
                                     <Label layoutX="24.0" layoutY="336.0" text="Product Name:">
                                        <font>
                                           <Font size="15.0" />
@@ -274,7 +274,7 @@
                                     <String fx:value="white-bg" />
                                  </styleClass>
                                  <children>
-                                    <TableView fx:id="addProducts_tableView" layoutX="4.0" layoutY="46.0" prefHeight="462.0" prefWidth="537.0">
+                                    <TableView fx:id="addProducts_tableView" layoutX="4.0" layoutY="46.0" onMouseClicked="#addProductsSelect" prefHeight="462.0" prefWidth="537.0">
                                       <columns>
                                         <TableColumn fx:id="addProducts_col_productid" prefWidth="99.0" text="Product ID" />
                                         <TableColumn fx:id="addProducts_col_type" prefWidth="117.0" text="Type" />
