@@ -205,7 +205,7 @@
                               </AnchorPane>
                            </children>
                         </AnchorPane>
-                        <AnchorPane fx:id="addProducts_form" layoutX="75.0" layoutY="70.0" prefHeight="555.0" prefWidth="900.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <AnchorPane fx:id="addProducts_form" layoutX="75.0" layoutY="70.0" prefHeight="555.0" prefWidth="900.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
                               <AnchorPane layoutX="14.0" layoutY="14.0" prefHeight="528.0" prefWidth="314.0" stylesheets="@../../../dashboardDesign.css">
                                  <styleClass>
@@ -284,13 +284,13 @@
                                           <TableColumn fx:id="addProducts_col_status" prefWidth="62.0" text="Status" />
                                       </columns>
                                     </TableView>
-                                    <TextField fx:id="addProducts_search" layoutX="4.0" layoutY="14.0" prefHeight="25.0" prefWidth="217.0" promptText="Search" styleClass="search" stylesheets="@../../../dashboardDesign.css" />
+                                    <TextField fx:id="addProducts_search" layoutX="4.0" layoutY="14.0" onAction="#addProductsSearch" prefHeight="25.0" prefWidth="217.0" promptText="Search" styleClass="search" stylesheets="@../../../dashboardDesign.css" />
                                     <FontAwesomeIcon fill="#fc8d42" glyphName="SEARCH" layoutX="14.0" layoutY="31.0" size="1.2em" />
                                  </children>
                               </AnchorPane>
                            </children>
                         </AnchorPane>
-                        <AnchorPane fx:id="orders_form" prefHeight="540.0" prefWidth="891.0" visible="false">
+                        <AnchorPane fx:id="orders_form" prefHeight="540.0" prefWidth="891.0">
                            <children>
                               <AnchorPane layoutX="7.0" layoutY="14.0" prefHeight="526.0" prefWidth="468.0" stylesheets="@../../../dashboardDesign.css">
                                  <styleClass>
@@ -302,7 +302,7 @@
                                       <columns>
                                         <TableColumn fx:id="orders_col_type" prefWidth="75.0" text="Type" />
                                         <TableColumn fx:id="orders_col_brand" prefWidth="75.0" text="Brand" />
-                                          <TableColumn fx:id="orders_col_brandName" prefWidth="109.0" text="Product Name" />
+                                          <TableColumn fx:id="orders_col_productName" prefWidth="109.0" text="Product Name" />
                                           <TableColumn fx:id="orders_col_quantity" prefWidth="81.0" text="Quantity" />
                                           <TableColumn fx:id="orders_col_price" prefWidth="123.0" text="Price" />
                                       </columns>
@@ -320,19 +320,19 @@
                                           <Font size="15.0" />
                                        </font>
                                     </Label>
-                                    <ComboBox fx:id="orders_productType" layoutX="151.0" layoutY="41.0" prefHeight="25.0" prefWidth="176.0" promptText="Choose" styleClass="textfield" stylesheets="@../../../dashboardDesign.css" />
-                                    <Label layoutX="34.0" layoutY="81.0" text="Product Type:">
+                                    <ComboBox fx:id="orders_productType" layoutX="151.0" layoutY="41.0" onAction="#ordersListType" prefHeight="25.0" prefWidth="176.0" promptText="Choose" styleClass="textfield" stylesheets="@../../../dashboardDesign.css" />
+                                    <Label layoutX="34.0" layoutY="81.0" text="Brand Name:">
                                        <font>
                                           <Font size="15.0" />
                                        </font>
                                     </Label>
-                                    <ComboBox fx:id="orders_brand" layoutX="151.0" layoutY="79.0" prefHeight="25.0" prefWidth="176.0" promptText="Choose" styleClass="textfield" stylesheets="@../../../dashboardDesign.css" />
+                                    <ComboBox fx:id="orders_brand" layoutX="151.0" layoutY="79.0" onAction="#ordersListBrand" prefHeight="25.0" prefWidth="176.0" promptText="Choose" styleClass="textfield" stylesheets="@../../../dashboardDesign.css" />
                                     <Label layoutX="26.0" layoutY="123.0" text="Product Name:">
                                        <font>
                                           <Font size="15.0" />
                                        </font>
                                     </Label>
-                                    <ComboBox fx:id="orders_productName" layoutX="151.0" layoutY="121.0" prefHeight="25.0" prefWidth="176.0" promptText="Choose" styleClass="textfield" stylesheets="@../../../dashboardDesign.css" />
+                                    <ComboBox fx:id="orders_productName" layoutX="151.0" layoutY="121.0" onAction="#ordersListProductName" prefHeight="25.0" prefWidth="176.0" promptText="Choose" styleClass="textfield" stylesheets="@../../../dashboardDesign.css" />
                                     <Spinner fx:id="orders_quantity" layoutX="151.0" layoutY="167.0" styleClass="textfield" stylesheets="@../../../dashboardDesign.css" />
                                     <Label layoutX="64.0" layoutY="169.0" text="Quantity:">
                                        <font>

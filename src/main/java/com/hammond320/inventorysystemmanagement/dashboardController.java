@@ -142,16 +142,16 @@ public class dashboardController implements Initializable {
     private TableColumn<productData, String> orders_col_brand;
 
     @FXML
-    private TableColumn<?, ?> orders_col_brandName;
+    private TableColumn<customerData, String> orders_col_productName;
 
     @FXML
-    private TableColumn<?, ?> orders_col_price;
+    private TableColumn<customerData, String> orders_col_price;
 
     @FXML
-    private TableColumn<?, ?> orders_col_quantity;
+    private TableColumn<customerData, String> orders_col_quantity;
 
     @FXML
-    private TableColumn<?, ?> orders_col_type;
+    private TableColumn<customerData, String> orders_col_type;
 
     @FXML
     private AnchorPane orders_form;
@@ -175,7 +175,7 @@ public class dashboardController implements Initializable {
     private Button orders_resetBtn;
 
     @FXML
-    private TableView<?> orders_tableView;
+    private TableView<customerData> orders_tableView;
 
     @FXML
     private Label orders_total;
@@ -497,9 +497,6 @@ public class dashboardController implements Initializable {
         addProducts_col_status.setCellValueFactory(new PropertyValueFactory<>("status"));
         addProducts_col_price.setCellValueFactory(new PropertyValueFactory<>("price"));
         addProducts_tableView.setItems(addProductsList);
-
-
-
     }
 
     public void addProductsSelect(){
@@ -516,6 +513,139 @@ public class dashboardController implements Initializable {
         image = new Image(uri, 155, 173,false, true);
         addProducts_imageView.setImage(image);
         getData.path = prodD.getImage();
+    }
+
+    private String[] orderListType = {"Snacks", "Drink", "Dessert", "Gadgets", "Personal Product", "Others"};
+    public void ordersListType(){
+        List<String> listT = new ArrayList<>();
+
+        for(String data: orderListType){
+            listT.add(data);
+        }
+
+        ObservableList listData = FXCollections.observableArrayList(listT);
+        orders_productType.setItems(listData);
+
+        ordersListBrand();
+
+    }
+
+    public void ordersListBrand(){
+        String sql = "SELECT brand FROM product WHERE type = '"
+                +orders_productType.getSelectionModel().getSelectedItem()
+                +"' and status = 'Available'";
+        connect = database.connectionDb();
+
+        try{
+            prepare = connect.prepareStatement(sql);
+            result = prepare.executeQuery();
+
+            ObservableList listData = FXCollections.observableArrayList();
+
+            while (result.next()){
+                listData.add(result.getString("brand"));
+            }
+            orders_brand.setItems(listData);
+            ordersListProductName();
+
+        }catch (Exception e){e.printStackTrace();}
+    }
+
+    public void ordersListProductName(){
+
+        String sql = "SELECT productName FROM product WHERE brand = '"+orders_brand.getSelectionModel().getSelectedItem()+"'";
+
+        connect = database.connectionDb();
+
+        try{
+            prepare = connect.prepareStatement(sql);
+            result = prepare.executeQuery();
+
+            ObservableList listData = FXCollections.observableArrayList();
+
+            while (result.next()){
+                listData.add(result.getString("productName"));
+            }
+            orders_productName.setItems(listData);
+
+        }catch (Exception e){e.printStackTrace();}
+    }
+
+
+    public ObservableList<customerData> ordersListData(){
+
+        customerId();
+        ObservableList<customerData> listData = FXCollections.observableArrayList();
+        String sql = "SELECT * FROM customer WHERE customer_id = '"+customerid+"'";
+
+        connect = database.connectionDb();
+
+        try{
+            customerData customerD;
+            prepare = connect.prepareStatement(sql);
+            result = prepare.executeQuery();
+
+            while (result.next()){
+                customerD = new customerData(result.getInt("customer_id"),
+                        result.getString("type"),
+                        result.getString("brand"),
+                        result.getString("productName"),
+                        result.getInt("quantity"),
+                        result.getDouble("price"),
+                        result.getDate("date"));
+                listData.add(customerD);
+            }
+
+        }catch (Exception e){e.printStackTrace();}
+        return  listData;
+    }
+
+    private ObservableList<customerData> ordersList;
+    public void ordersShowListData(){
+        ordersList = ordersListData();
+
+        orders_col_type.setCellValueFactory(new PropertyValueFactory<>("type"));
+        orders_col_brand.setCellValueFactory(new PropertyValueFactory<>("brand"));
+        orders_col_productName.setCellValueFactory(new PropertyValueFactory<>("productName"));
+        orders_col_quantity.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+        orders_col_quantity.setCellValueFactory(new PropertyValueFactory<>("price"));
+
+        orders_tableView.setItems(ordersList);
+
+    }
+
+    private int customerid;
+    public void customerId(){
+        String customerId = "SELECT * FROM customer";
+
+        connect = database.connectionDb();
+
+        try{
+            prepare = connect.prepareStatement(customerId);
+            result = prepare.executeQuery();
+
+            int checkId = 0;
+
+            while(result.next()){
+                customerid = result.getInt("customer_id");
+            }
+
+            String checkData = "SELECT * FROM customer_receipt";
+
+            statement = connect.createStatement();
+            result = statement.executeQuery(checkData);
+
+            while (result.next()){
+                checkId = result.getInt("customer_id");
+            }
+
+            if(checkId == 0){
+                customerid += 1;
+            }else if(checkId == customerid){
+                customerid += 1;
+            }
+
+        }catch(Exception e){e.printStackTrace();}
     }
 
     public void switchForm(ActionEvent event){
@@ -549,6 +679,11 @@ public class dashboardController implements Initializable {
             home_btn.setStyle("-fx-background-color: transparent");
             addProduct_btn.setStyle("-fx-background-color: transparent");
             orders_btn.setStyle("-fx-background-color: linear-gradient(to right, #fa793c, #cc4c0c);");
+
+            ordersShowListData();
+            ordersListType();
+            ordersListBrand();
+            ordersListProductName();
 
         }
 
@@ -605,6 +740,11 @@ public class dashboardController implements Initializable {
         addProductsShowListData();
         addProductsListStatus();
         addProductsListType();
+
+        ordersShowListData();
+        ordersListType();
+        ordersListBrand();
+        ordersListProductName();
 
     }
 }
