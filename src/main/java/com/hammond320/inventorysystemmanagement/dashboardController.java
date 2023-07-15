@@ -166,7 +166,7 @@ public class dashboardController implements Initializable {
     private ComboBox<?> orders_productType;
 
     @FXML
-    private Spinner<?> orders_quantity;
+    private Spinner<Integer> orders_quantity;
 
     @FXML
     private Button orders_receiptBtn;
@@ -515,6 +515,90 @@ public class dashboardController implements Initializable {
         getData.path = prodD.getImage();
     }
 
+    public void ordersAdd(){
+
+        customerId();
+
+        String sql = "INSERT INTO customer (customer_id,type,brand,productName,quantity,price,date) "
+                + "VALUES(?,?,?,?,?,?,?)";
+
+        connect = database.connectionDb();
+
+        try{
+
+            String checkData = "SELECT * FROM product WHERE productName = '"+orders_productName.getSelectionModel().getSelectedItem()+"'";
+
+            double priceData = 0;
+
+            statement = connect.createStatement();
+            result = statement.executeQuery(checkData);
+
+            if(result.next()){
+                priceData = result.getDouble("price");
+            }
+
+            double totalPData = (priceData*qty);
+            Alert alert;
+
+            System.out.println(priceData);
+            System.out.println(qty);
+            System.out.println(totalPData);
+
+            if(orders_productType.getSelectionModel().getSelectedItem() == null
+                || (String)orders_brand.getSelectionModel().getSelectedItem() == null
+                || (String)orders_productName.getSelectionModel().getSelectedItem() == null
+                || totalPData == 0){
+
+                alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error Message");
+                alert.setHeaderText(null);
+                alert.setContentText("Please choose a product first");
+                alert.showAndWait();
+
+            }else {
+                prepare = connect.prepareStatement(sql);
+                prepare.setString(1, String.valueOf(customerid));
+                prepare.setString(2,(String)orders_productType.getSelectionModel().getSelectedItem());
+                prepare.setString(3,(String)orders_brand.getSelectionModel().getSelectedItem());
+                prepare.setString(4, (String)orders_productName.getSelectionModel().getSelectedItem());
+                prepare.setString(5, String.valueOf(qty));
+
+                prepare.setString(6, String.valueOf(totalPData));
+
+                Date date = new Date();
+                java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+                prepare.setString(7, String.valueOf(sqlDate));
+
+                prepare.executeUpdate();
+                ordersDisplayTotal();
+
+            }
+        }catch (Exception e){e.printStackTrace();}
+    }
+
+    private double totalP;
+    public void ordersDisplayTotal(){
+        customerId();
+        String sql = "SELECT SUM(price) FROM customer WHERE customer_id = '"+customerid+"'";
+
+        connect = database.connectionDb();
+
+        try{
+            prepare = connect.prepareStatement(sql);
+            result = prepare.executeQuery();
+
+            while (result.next()){
+                totalP = result.getDouble("SUM(price)");
+                System.out.println(totalP);
+            }
+            orders_total.setText("$"+totalP);
+
+            System.out.println(totalP);
+
+        }catch (Exception e){e.printStackTrace();}
+
+    }
+
     private String[] orderListType = {"Snacks", "Drink", "Dessert", "Gadgets", "Personal Product", "Others"};
     public void ordersListType(){
         List<String> listT = new ArrayList<>();
@@ -569,6 +653,20 @@ public class dashboardController implements Initializable {
             orders_productName.setItems(listData);
 
         }catch (Exception e){e.printStackTrace();}
+    }
+
+    private SpinnerValueFactory<Integer> spinner;
+
+    public void ordersSpinner(){
+        spinner = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 100, 0);
+
+        orders_quantity.setValueFactory(spinner);
+    }
+
+    private int qty;
+
+    public void ordersShowSpinnerValue(){
+        qty = orders_quantity.getValue();
     }
 
 
@@ -684,6 +782,7 @@ public class dashboardController implements Initializable {
             ordersListType();
             ordersListBrand();
             ordersListProductName();
+            ordersSpinner();
 
         }
 
@@ -745,6 +844,7 @@ public class dashboardController implements Initializable {
         ordersListType();
         ordersListBrand();
         ordersListProductName();
+        ordersSpinner();
 
     }
 }

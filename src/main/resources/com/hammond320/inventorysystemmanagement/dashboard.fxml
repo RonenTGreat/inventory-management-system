@@ -333,7 +333,7 @@
                                        </font>
                                     </Label>
                                     <ComboBox fx:id="orders_productName" layoutX="151.0" layoutY="121.0" onAction="#ordersListProductName" prefHeight="25.0" prefWidth="176.0" promptText="Choose" styleClass="textfield" stylesheets="@../../../dashboardDesign.css" />
-                                    <Spinner fx:id="orders_quantity" layoutX="151.0" layoutY="167.0" styleClass="textfield" stylesheets="@../../../dashboardDesign.css" />
+                                    <Spinner fx:id="orders_quantity" layoutX="151.0" layoutY="167.0" onMouseClicked="#ordersShowSpinnerValue" styleClass="textfield" stylesheets="@../../../dashboardDesign.css" />
                                     <Label layoutX="64.0" layoutY="169.0" text="Quantity:">
                                        <font>
                                           <Font size="15.0" />
@@ -368,7 +368,7 @@
                                     <Button fx:id="orders_payBtn" layoutX="228.0" layoutY="383.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="91.0" styleClass="pay-btn" stylesheets="@../../../dashboardDesign.css" text="Pay" />
                                     <Button fx:id="orders_receiptBtn" layoutX="64.0" layoutY="383.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="91.0" styleClass="receipt-btn" stylesheets="@../../../dashboardDesign.css" text="Receipt" />
                                     <Button fx:id="orders_resetBtn" layoutX="64.0" layoutY="462.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="91.0" styleClass="reset-btn" stylesheets="@../../../dashboardDesign.css" text="Reset" />
-                                    <Button fx:id="orders_addBtn" layoutX="211.0" layoutY="206.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="91.0" styleClass="add-btn" stylesheets="@../../../dashboardDesign.css" text="Add" />
+                                    <Button fx:id="orders_addBtn" layoutX="211.0" layoutY="206.0" mnemonicParsing="false" onAction="#ordersAdd" prefHeight="50.0" prefWidth="91.0" styleClass="add-btn" stylesheets="@../../../dashboardDesign.css" text="Add" />
                                  </children>
                               </AnchorPane>
                            </children>
