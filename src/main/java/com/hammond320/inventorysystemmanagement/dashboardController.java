@@ -21,6 +21,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.AreaChart;
 import javafx.scene.chart.BarChart;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
@@ -195,7 +196,125 @@ public class dashboardController implements Initializable {
 
     public void homeDisplayTotalOrders(){
 
+        Date date = new Date();
+        java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+
+
+        String sql = "SELECT COUNT(id) FROM customer WHERE date = '"+sqlDate+"'";
+
+        connect = database.connectionDb();
+
+        int countOrders = 0;
+
+        try{
+            prepare = connect.prepareStatement(sql);
+            result = prepare.executeQuery();
+
+            while (result.next()){
+                countOrders = result.getInt("COUNT(id)");
+            }
+
+            home_numberOrder.setText(String.valueOf(countOrders));
+
+        }catch (Exception e){e.printStackTrace();}
     }
+
+    public void homeTotalIncome(){
+        String sql = "SELECT SUM(total) FROM customer_receipt";
+
+        connect = database.connectionDb();
+
+        double totalIncome = 0;
+
+        try{
+            prepare = connect.prepareStatement(sql);
+            result = prepare.executeQuery();
+
+            while (result.next()){
+                totalIncome = result.getDouble("SUM(total)");
+            }
+
+
+            home_totalIcome.setText("$" + String.valueOf(totalIncome));
+
+        }catch (Exception e){e.printStackTrace();}
+    }
+
+
+
+
+    public void homeAvailableProducts(){
+
+        String sql = "SELECT COUNT(id) FROM product WHERE status = 'Available'";
+
+        connect = database.connectionDb();
+
+        int countAP = 0;
+
+        try{
+            prepare = connect.prepareStatement(sql);
+            result = prepare.executeQuery();
+            while (result.next()){
+                countAP = result.getInt("COUNT(id)");
+            }
+
+            home_availableProducts.setText(String.valueOf(countAP));
+
+
+        }catch (Exception e){e.printStackTrace();}
+    }
+
+    public void homeIncomeChart(){
+        home_incomeChart.getData().clear();
+
+        String sql = "SELECT date, SUM(total) FROM customer_receipt GROUP by date ORDER BY TIMESTAMP (date) ASC LIMIT 6";
+        connect = database.connectionDb();
+
+        try{
+
+            XYChart.Series chart = new XYChart.Series();
+
+            prepare = connect.prepareStatement(sql);
+            result = prepare.executeQuery();
+
+            while (result.next()){
+                chart.getData().add(new XYChart.Data(result.getString(1), result.getInt(2)));
+            }
+
+            home_incomeChart.getData().add(chart);
+
+        }catch (Exception e){e.printStackTrace();}
+
+    }
+
+
+
+
+    public void homeOrdersChart(){
+        home_orderChart.getData().clear();
+
+        String sql = "SELECT date, COUNT(id) FROM customer GROUP BY date ORDER BY TIMESTAMP(date) ASC LIMIT 5";
+
+        connect = database.connectionDb();
+
+        try{
+
+            XYChart.Series chart = new XYChart.Series();
+
+
+            prepare = connect.prepareStatement(sql);
+            result = prepare.executeQuery();
+
+            while (result.next()){
+                chart.getData().add(new XYChart.Data(result.getString(1), result.getInt(2)));
+            }
+
+            home_orderChart.getData().add(chart);
+
+        }catch (Exception e){e.printStackTrace();}
+
+    }
+
 
     public void addProductsAdd(){
         String sql = "INSERT INTO product (product_id,type,brand,productName,price,status,image,date) " +
@@ -405,7 +524,7 @@ public class dashboardController implements Initializable {
         }
     }
 
-    private String[] listType = {"Snacks", "Drink", "Dessert", "Gadgets", "Personal Product", "Others"};
+    private String[] listType = {"Beverages", "Bread/Bakery", "Canned/Jarred Goods", "Dairy Products", "Dry/Baking Goods", "Frozen Products", "Meat", "Farm Produce", "Home Cleaners", "Paper Goods", "Home Care"};
     public void addProductsListType(){
         List<String> listT = new ArrayList<>();
 
@@ -746,7 +865,7 @@ public class dashboardController implements Initializable {
 
     }
 
-    private String[] orderListType = {"Snacks", "Drink", "Dessert", "Gadgets", "Personal Product", "Others"};
+    private String[] orderListType = {"Beverages", "Bread/Bakery", "Canned/Jarred Goods", "Dairy Products", "Dry/Baking Goods", "Frozen Products", "Meat", "Farm Produce", "Home Cleaners", "Paper Goods", "Home Care"};
     public void ordersListType(){
         List<String> listT = new ArrayList<>();
 
@@ -764,7 +883,7 @@ public class dashboardController implements Initializable {
     public void ordersListBrand(){
         String sql = "SELECT brand FROM product WHERE type = '"
                 +orders_productType.getSelectionModel().getSelectedItem()
-                +"' and status = 'Available'";
+                +"' and status = 'Available' GROUP BY brand";
         connect = database.connectionDb();
 
         try{
@@ -903,6 +1022,12 @@ public class dashboardController implements Initializable {
             home_btn.setStyle("-fx-background-color: linear-gradient(to right, #fa793c, #cc4c0c);");
             addProduct_btn.setStyle("-fx-background-color: transparent");
             orders_btn.setStyle("-fx-background-color: transparent");
+
+            homeDisplayTotalOrders();
+            homeAvailableProducts();
+            homeTotalIncome();
+            homeIncomeChart();
+            homeOrdersChart();
         } else if (event.getSource() == addProduct_btn) {
             home_form.setVisible(false);
             addProducts_form.setVisible(true);
@@ -936,7 +1061,11 @@ public class dashboardController implements Initializable {
 
 
     }
-    
+
+    public void defaultNav(){
+        home_btn.setStyle("-fx-background-color: linear-gradient(to right, #fa793c, #cc4c0c);");
+    }
+
     private  double x = 0;
     private double y = 0;
     
@@ -981,8 +1110,21 @@ public class dashboardController implements Initializable {
         }catch (Exception e){e.printStackTrace();}
     }
 
+    public  void displayUsername(){
+        username.setText(getData.username);
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources){
+
+        displayUsername();
+        defaultNav();
+
+        homeDisplayTotalOrders();
+        homeAvailableProducts();
+        homeTotalIncome();
+        homeIncomeChart();
+        homeOrdersChart();
 
         addProductsShowListData();
         addProductsListStatus();

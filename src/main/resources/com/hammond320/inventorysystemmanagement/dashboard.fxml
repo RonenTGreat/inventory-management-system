@@ -95,7 +95,7 @@
                <center>
                   <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                      <children>
-                        <AnchorPane fx:id="home_form" layoutX="239.0" layoutY="167.0" prefHeight="555.0" prefWidth="900.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <AnchorPane fx:id="home_form" layoutX="239.0" layoutY="167.0" prefHeight="555.0" prefWidth="900.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
                               <AnchorPane layoutX="13.0" layoutY="14.0" prefHeight="164.0" prefWidth="875.0" stylesheets="@../../../dashboardDesign.css">
                                  <styleClass>
@@ -290,7 +290,7 @@
                               </AnchorPane>
                            </children>
                         </AnchorPane>
-                        <AnchorPane fx:id="orders_form" prefHeight="540.0" prefWidth="891.0">
+                        <AnchorPane fx:id="orders_form" prefHeight="540.0" prefWidth="891.0" visible="false">
                            <children>
                               <AnchorPane layoutX="7.0" layoutY="14.0" prefHeight="526.0" prefWidth="468.0" stylesheets="@../../../dashboardDesign.css">
                                  <styleClass>
