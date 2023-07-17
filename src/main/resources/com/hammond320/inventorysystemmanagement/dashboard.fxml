@@ -354,7 +354,7 @@
                                           <Font size="15.0" />
                                        </font>
                                     </Label>
-                                    <TextField fx:id="orders_amount" layoutX="151.0" layoutY="293.0" styleClass="textfield" stylesheets="@../../../dashboardDesign.css" />
+                                    <TextField fx:id="orders_amount" layoutX="151.0" layoutY="293.0" onAction="#ordersAmount" styleClass="textfield" stylesheets="@../../../dashboardDesign.css" />
                                     <Label layoutX="68.0" layoutY="329.0" text="Balance:">
                                        <font>
                                           <Font size="15.0" />
@@ -365,9 +365,9 @@
                                           <Font size="15.0" />
                                        </font>
                                     </Label>
-                                    <Button fx:id="orders_payBtn" layoutX="228.0" layoutY="383.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="91.0" styleClass="pay-btn" stylesheets="@../../../dashboardDesign.css" text="Pay" />
+                                    <Button fx:id="orders_payBtn" layoutX="228.0" layoutY="383.0" mnemonicParsing="false" onAction="#ordersPay" prefHeight="50.0" prefWidth="91.0" styleClass="pay-btn" stylesheets="@../../../dashboardDesign.css" text="Pay" />
                                     <Button fx:id="orders_receiptBtn" layoutX="64.0" layoutY="383.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="91.0" styleClass="receipt-btn" stylesheets="@../../../dashboardDesign.css" text="Receipt" />
-                                    <Button fx:id="orders_resetBtn" layoutX="64.0" layoutY="462.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="91.0" styleClass="reset-btn" stylesheets="@../../../dashboardDesign.css" text="Reset" />
+                                    <Button fx:id="orders_resetBtn" layoutX="64.0" layoutY="462.0" mnemonicParsing="false" onAction="#ordersReset" prefHeight="50.0" prefWidth="91.0" styleClass="reset-btn" stylesheets="@../../../dashboardDesign.css" text="Reset" />
                                     <Button fx:id="orders_addBtn" layoutX="211.0" layoutY="206.0" mnemonicParsing="false" onAction="#ordersAdd" prefHeight="50.0" prefWidth="91.0" styleClass="add-btn" stylesheets="@../../../dashboardDesign.css" text="Add" />
                                  </children>
                               </AnchorPane>

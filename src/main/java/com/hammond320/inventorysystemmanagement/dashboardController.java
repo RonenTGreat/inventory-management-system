@@ -192,6 +192,11 @@ public class dashboardController implements Initializable {
     private ResultSet result;
     private Image image;
 
+
+    public void homeDisplayTotalOrders(){
+
+    }
+
     public void addProductsAdd(){
         String sql = "INSERT INTO product (product_id,type,brand,productName,price,status,image,date) " +
                 "VALUES(?,?,?,?,?,?,?,?)";
@@ -576,10 +581,153 @@ public class dashboardController implements Initializable {
         }catch (Exception e){e.printStackTrace();}
     }
 
+    public void ordersPay(){
+        customerId();
+        String sql = "INSERT INTO customer_receipt (customer_id,total,amount,balance,date) "
+                + "VALUES(?,?,?,?,?)";
+
+        connect = database.connectionDb();
+
+        try{
+            Alert alert;
+            if(totalP > 0 || orders_amount.getText().isEmpty() || amountP == 0){
+
+                alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("Confirmation Message");
+                alert.setHeaderText(null);
+                alert.setContentText("Are you sure?");
+                Optional<ButtonType> option = alert.showAndWait();
+
+                if(option.get().equals(ButtonType.OK)){
+                    prepare = connect.prepareStatement(sql);
+                    prepare.setString(1, String.valueOf(customerid));
+                    prepare.setString(2, String.valueOf(totalP));
+                    prepare.setString(3, String.valueOf(amountP));
+                    prepare.setString(4, String.valueOf(balanceP));
+                    Date date = new Date();
+                    java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+                    prepare.setString(5, String.valueOf(sqlDate));
+
+                    prepare.executeUpdate();
+
+                    alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Information Message");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Successful!");
+                    alert.showAndWait();
+
+                    ordersShowListData();
+
+                    totalP = 0;
+                    balanceP = 0;
+                    amountP = 0;
+
+                    orders_balance.setText("$0.0");
+
+
+                }
+
+            }else{
+                alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error Message");
+                alert.setHeaderText(null);
+                alert.setContentText("Invalid :3");
+                alert.showAndWait();
+            }
+
+
+        }catch (Exception e){e.printStackTrace();}
+    }
+
+    public void orderReceipt(){
+
+    }
+
+    public void ordersReset(){
+        customerId();
+        String sql = "DELETE FROM customer WHERE customer_id = '"+customerid+"'";
+
+        connect = database.connectionDb();
+
+        try{
+            if(!orders_tableView.getItems().isEmpty()){
+
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("Confirmation Message");
+                alert.setHeaderText(null);
+                alert.setContentText("Are you sure you want to reset?");
+                Optional<ButtonType> option = alert.showAndWait();
+
+                if(option.get().equals(ButtonType.OK)){
+                    statement = connect.createStatement();
+                    statement.executeUpdate(sql);
+
+
+                    ordersShowListData();
+
+                    totalP = 0;
+                    balanceP = 0;
+                    amountP = 0;
+
+                    orders_balance.setText("$0.0");
+                    orders_total.setText("$0.0");
+                    orders_amount.setText("");
+                }
+
+
+            }
+
+        }catch(Exception e){e.printStackTrace();}
+
+    }
+
+
+
+    private double amountP;
+    private double balanceP;
+    public void ordersAmount(){
+
+        Alert alert;
+
+        if(!orders_amount.getText().isEmpty()) {
+
+
+            amountP = Double.parseDouble(orders_amount.getText());
+
+
+            if (totalP > 0) {
+                if (amountP > totalP) {
+                    balanceP = (amountP - totalP);
+
+                    orders_balance.setText("$" + String.valueOf(balanceP));
+
+                } else {
+                    alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setHeaderText(null);
+                    alert.setContentText("Invalid :3");
+                    alert.showAndWait();
+
+                    orders_amount.setText("");
+                }
+
+            } else {
+                alert = new Alert(Alert.AlertType.ERROR);
+                alert.setHeaderText(null);
+                alert.setContentText("Invalid :3");
+                alert.showAndWait();
+            }
+        }else {
+            alert = new Alert(Alert.AlertType.ERROR);
+            alert.setHeaderText(null);
+            alert.setContentText("Invalid :3");
+            alert.showAndWait();
+        }
+    }
+
     private double totalP;
     public void ordersDisplayTotal(){
         customerId();
-        String sql = "SELECT SUM(price) FROM customer WHERE customer_id = '"+customerid+"'";
+        String sql = "SELECT SUM(price) FROM customer WHERE customer_id='"+customerid+"'";
 
         connect = database.connectionDb();
 
@@ -589,10 +737,9 @@ public class dashboardController implements Initializable {
 
             while (result.next()){
                 totalP = result.getDouble("SUM(price)");
-                System.out.println(totalP);
             }
-            orders_total.setText("$"+totalP);
 
+            orders_total.setText("$"+String.valueOf(totalP));
             System.out.println(totalP);
 
         }catch (Exception e){e.printStackTrace();}
@@ -706,9 +853,10 @@ public class dashboardController implements Initializable {
         orders_col_brand.setCellValueFactory(new PropertyValueFactory<>("brand"));
         orders_col_productName.setCellValueFactory(new PropertyValueFactory<>("productName"));
         orders_col_quantity.setCellValueFactory(new PropertyValueFactory<>("quantity"));
-        orders_col_quantity.setCellValueFactory(new PropertyValueFactory<>("price"));
+        orders_col_price.setCellValueFactory(new PropertyValueFactory<>("price"));
 
         orders_tableView.setItems(ordersList);
+        ordersDisplayTotal();
 
     }
 
@@ -737,7 +885,7 @@ public class dashboardController implements Initializable {
                 checkId = result.getInt("customer_id");
             }
 
-            if(checkId == 0){
+            if(customerid == 0){
                 customerid += 1;
             }else if(checkId == customerid){
                 customerid += 1;
